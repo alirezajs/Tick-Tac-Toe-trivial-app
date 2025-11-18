@@ -1,0 +1,1 @@
+For Switching between player and show the active player we need to use to use `Lifting State Up` which means Lift the state up to all the closet ancestor component that has access to all components that need to work with that sate. Here is `app.jsx` component.
