@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 const initialGameBoard = [
@@ -7,16 +7,15 @@ const initialGameBoard = [
   [null, null, null],
 ];
 
-export default function GameBoard({ onSelectSquare, activePlayerSymbol }) {
-  const [gameBoard, setGameBoard] = useState(initialGameBoard);
+export default function GameBoard({ onSelectSquare, turns }) {
+  // This is call driving the game board
+  let gameBoard = initialGameBoard;
 
-  function handleSelectSquare(rowIndex, colIndex) {
-    setGameBoard((prevGameBoard) => {
-      const updateBoard = [...prevGameBoard.map((row) => [...row])]; // create a new array with all new arrays inside
-      updateBoard[rowIndex][colIndex] = activePlayerSymbol;
-      return updateBoard;
-    });
-    onSelectSquare();
+  for (let turn of turns) {
+    const { square, player } = turn;
+    const { row, col } = square;
+
+    gameBoard[row][col] = player;
   }
   return (
     <>
@@ -27,7 +26,7 @@ export default function GameBoard({ onSelectSquare, activePlayerSymbol }) {
               {row.map((playerSymbol, colIndex) => (
                 <li key={colIndex}>
                   <button
-                    onClick={() => handleSelectSquare(rowIndex, colIndex)}
+                    onClick={() => onSelectSquare(rowIndex, colIndex)}
                     data-row={rowIndex}
                     data-cell={colIndex}
                   >
@@ -45,5 +44,13 @@ export default function GameBoard({ onSelectSquare, activePlayerSymbol }) {
 
 GameBoard.propTypes = {
   onSelectSquare: PropTypes.func.isRequired,
-  activePlayerSymbol: PropTypes.string,
+  turns: PropTypes.arrayOf(
+    PropTypes.shape({
+      square: PropTypes.shape({
+        row: PropTypes.number.isRequired,
+        col: PropTypes.number.isRequired,
+      }).isRequired,
+      player: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };

@@ -22,3 +22,44 @@ and instead you create a copy of the old state then the you just change that cop
 const updatedUser = { ...user };
 updateUser.name = 'max';
 ```
+
+For the sake of having less states with the same logic, we decided to refactor GamBoard again
+so this is this state before latest updates
+
+```js
+export default function GameBoard({ onSelectSquare, activePlayerSymbol }) {
+  const [gameBoard, setGameBoard] = useState(initialGameBoard);
+
+  function handleSelectSquare(rowIndex, colIndex) {
+    setGameBoard((prevGameBoard) => {
+      const updateBoard = [...prevGameBoard.map((row) => [...row])]; // create a new array with all new arrays inside
+      updateBoard[rowIndex][colIndex] = activePlayerSymbol;
+      return updateBoard;
+    });
+    onSelectSquare();
+  }
+  return (
+    <>
+      <ol id="game-board">
+        {gameBoard.map((row, rowIndex) => (
+          <li key={rowIndex}>
+            <ol>
+              {row.map((playerSymbol, colIndex) => (
+                <li key={colIndex}>
+                  <button
+                    onClick={() => handleSelectSquare(rowIndex, colIndex)}
+                    data-row={rowIndex}
+                    data-cell={colIndex}
+                  >
+                    {playerSymbol}
+                  </button>
+                </li>
+              ))}
+            </ol>
+          </li>
+        ))}
+      </ol>
+    </>
+  );
+}
+```
