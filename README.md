@@ -97,6 +97,7 @@ npm run preview
 ## Contributions and notes
 
 This is a small starter app. If you want to extend it:
+
 - Add tests (Jest + React Testing Library).
 - Wire up a parent-managed state for players instead of local state inside `Player`.
 - Add CI checks for lint and build.
@@ -104,7 +105,7 @@ This is a small starter app. If you want to extend it:
 ---
 
 If you'd like, I can also:
+
 - Add tests for `src/components/player.jsx` (React Testing Library).
 - Add an `onNameSave` callback to the `Player` component and wire a parent example.
 - Create a short CONTRIBUTING.md or PR checklist.
-
