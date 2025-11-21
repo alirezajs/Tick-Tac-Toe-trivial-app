@@ -20,6 +20,8 @@ function deriveActivePlayer(gameTurns) {
 }
 
 function App() {
+  const [players, setPlayers] = useState({ X: 'PLAYER 1', O: 'PLAYER 2' });
+
   const [gameTurns, setGameTurns] = useState([]);
   const currentPlayer = deriveActivePlayer(gameTurns);
 
@@ -43,8 +45,7 @@ function App() {
 
     if (symA && symA === symB && symA === symC) {
       // symA is 'X' or 'O'
-      console.log(`Player ${symA} wins!`);
-      winner = symA;
+      winner = players[symA];
       break;
     }
   }
@@ -65,12 +66,28 @@ function App() {
     setGameTurns([]);
   }
 
+  function handlePlayerNameChange(symbol, newName) {
+    setPlayers((prevPlayers) => {
+      return { ...prevPlayers, [symbol]: newName };
+    });
+  }
+
   return (
     <>
       <div id="game-container">
         <ol id="players" className="highlight-player">
-          <Player name="PLAYER 1" symbol="X" isActive={currentPlayer === 'X'} />
-          <Player name="PLAYER 2" symbol="O" isActive={currentPlayer === 'O'} />
+          <Player
+            name="PLAYER 1"
+            symbol="X"
+            isActive={currentPlayer === 'X'}
+            onChangeName={handlePlayerNameChange}
+          />
+          <Player
+            name="PLAYER 2"
+            symbol="O"
+            isActive={currentPlayer === 'O'}
+            onChangeName={handlePlayerNameChange}
+          />
         </ol>
         {(winner || hasDraw) && (
           <GameOver winner={winner} onRestartGame={handleRestartGame} />

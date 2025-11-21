@@ -1,11 +1,19 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-export default function Player({ name: initialName, symbol, isActive }) {
+export default function Player({
+  name: initialName,
+  symbol,
+  isActive,
+  onChangeName,
+}) {
   const [playerName, setPlayerName] = useState(initialName);
   const [isEdited, setIsEdited] = useState(false);
   const handleEditClick = () => {
     setIsEdited((wasEdited) => !wasEdited);
+    if (isEdited) {
+      onChangeName(symbol, playerName);
+    }
   };
   const handleInputChange = (event) => {
     setPlayerName(event.target.value);
@@ -42,4 +50,5 @@ Player.propTypes = {
   name: PropTypes.string.isRequired,
   symbol: PropTypes.string.isRequired,
   isActive: PropTypes.bool.isRequired,
+  onChangeName: PropTypes.func.isRequired,
 };
